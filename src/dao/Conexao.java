@@ -6,7 +6,7 @@ import java.sql.Connection;
 
 public class Conexao {
 	private Connection conexao;
-	private String url = "jdbc:mysql//localhost/";
+	private String url = "jdbc:mysql://localhost/";
 	private String banco = "bdgameranking";
 	private String usuario = "root";
 	private String senha = "";
@@ -14,7 +14,7 @@ public class Conexao {
 	public Conexao() {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			conexao = DriverManager.getConnection(url, usuario, senha);
+			conexao = DriverManager.getConnection(url + banco, usuario, senha);
 		} catch (ClassNotFoundException e) {
 			System.out.println("Class not found in System, =)");
 			e.printStackTrace();
@@ -25,9 +25,9 @@ public class Conexao {
 
 	}
 
-	private Connection retornaConexao() {
+	public Connection retornaConexao() {
 
-		return this.conexao;
+		return (this.conexao);
 
 	}
 
