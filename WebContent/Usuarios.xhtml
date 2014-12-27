@@ -1,18 +1,74 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-	  xmlns:f="http://java.sun.com/jsf/core"
-	  xmlns:h="http://java.sun.com/jsf/html"
-	  xmlns:p="http://primefaces.org/ui"
-	  xmlns:ui="http://java.sun.com/jsf/facelets"
-	  xmlns:pe="http://primefaces.org/ui/extensions">
-	  
-	<ui:composition template="/_template.xhtml">
-		<ui:define name="conteudo">
-			<center><p:panel id="basic" header="Game Ranking - Buriti Games" style="margin-bottom:20px; margin-top:20px; max-height: 125px; max-width: 450px; text-align:center">
-        		<p:commandButton value="Ver Game Ranking Global" onclick="location.href='Registros.xhtml'"/>
-        		<h6>Faça Login para ver seus recordes</h6>
-        		<h:form><p:growl id="messages" showDetail="true" sticky="true" /></h:form>
-    		</p:panel></center>
-		</ui:define>
-	</ui:composition>
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+<ui:composition template="/_template.xhtml">
+	<ui:define name="conteudo">
+		<h:form>
+			<p:growl id="messages" showDetail="true" sticky="true" />
+
+			<p:panel header="Usuários" style="margin-bottom:20px">
+				<p:commandButton value="Cadastrar Usuários"
+					style="float:right; margin-bottom:2px" type="button"
+					onclick="PF('cadastroUser').show();" />
+
+				<p:dialog header="Cadastrar" widgetVar="cadastroUser" minHeight="40">
+					<h:panelGrid columns="2">
+						<p:outputLabel for="nome" value="Nome:" />
+						<p:inputText id="nome" value="#{bUser.usuario.nome}"
+							required="true" requiredMessage="Nome Incompleto" />
+
+						<p:outputLabel for="mail" value="Email:" />
+						<p:inputText id="mail" value="#{bUser.usuario.email}"
+							required="true" requiredMessage="Email Incompleto" />
+
+						<p:outputLabel for="senha" value="Senha:" />
+						<p:password id="senha" value="#{bUser.usuario.senha}"
+							required="true" requiredMessage="Senha Incompleta" />
+
+						<p:outputLabel for="confirma" value="Confirmar Senha:" />
+						<p:password id="confirma" value="#{bUser.senha}" required="true"
+							requiredMessage="Senha Incompleta" />
+
+						<p:outputLabel value="Administrador:" />
+						<p:inputSwitch value="#{bUser.usuario.adm}" />
+					</h:panelGrid>
+
+					<p:commandButton style="float:center;" action="#{bUser.salvar()}"
+						update="@all" value="Salvar" />
+				</p:dialog>
+
+				<p:dataTable style="text-align:center" var="person"
+					value="#{bUser.userList}"
+					emptyMessage="Não tem Usuários Cadastrados">
+					<p:column width="20" headerText="Id">
+						<h:outputText value="#{person.id}" />
+					</p:column>
+
+					<p:column headerText="Nome">
+						<h:outputText value="#{person.nome}" />
+					</p:column>
+
+					<p:column headerText="Email">
+						<h:outputText value="#{person.email}" />
+					</p:column>
+
+					<p:column headerText="Administrador" width="120">
+						<p:inputSwitch value="#{person.adm}" disabled="true" />
+					</p:column>
+
+					<p:column width="120" headerText="Ações">
+						<p:commandButton icon="ui-icon-circle-close" action="#{bUser.remover(person)} update="@form" />
+					</p:column>
+				</p:dataTable>
+			</p:panel>
+
+		</h:form>
+
+	</ui:define>
+</ui:composition>
 </html>
